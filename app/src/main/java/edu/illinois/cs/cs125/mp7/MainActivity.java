@@ -16,19 +16,53 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import org.json.JSONObject;
+
 
 //http://food2fork.com/api/search URL
 //http://food2fork.com/api/search?key={API_KEY}&q=shredded%20chicken REQUEST
 public class MainActivity extends AppCompatActivity {
+    private static final String API_KEY = "027425cf9b8ec6677d75eb132622e862";
+    private static String firstChoiceRecipeName;
+    private static String firstChoiceRecipeID;
+    private static String secondChoiceRecipeName;
+    private static String secondChoiceRecipeID;
+    private static String thirdChoiceRecipeName;
+    private static String thirdChoiceRecipeID;
     private static String ingredients = null;
     //Default logging tag for messages from the main activity
     private static final String TAG = "MP7:Main";
+
+    private static RequestQueue requestQueue;
+
+    /**
+     * method for setting the recipe choices to display in the textbox
+     */
+    public void setRecipeChoices() {
+        TextView firsttextview = findViewById(R.id.firstChoiceText);
+        firsttextview.setText(firstChoiceRecipeName);
+        TextView secondtextview = findViewById(R.id.secondChoiceText);
+        secondtextview.setText(secondChoiceRecipeName);
+        TextView thirdtextview = findViewById(R.id.thirdChoiceText);
+        thirdtextview.setText(thirdChoiceRecipeName);
+    }
     /**
      * Run when our activity comes into view.
      * @param savedInstanceState state that was saved by the activity last time it was paused
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestQueue = Volley.newRequestQueue(this);
         Log.d(TAG, "onCreate ran");
         super.onCreate(savedInstanceState);
 
@@ -59,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                ingredients = s.toString();
                 if (s.toString().equals("")) {
                     generateButton.setEnabled(false);
                 } else {
@@ -76,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onEditorAction(TextView text, int actionId, KeyEvent event) {
             //save ingredients as a instance variable
-            ingredients = text.getText().toString();
             boolean handled = false;
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 Log.d(TAG, "Text field entered");
@@ -92,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         }
         });
 
-        //Action for generate button, will call a method that generates recipe(s)
+        //Action for generate button, will call a method that generates three recipe names
         generateButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,41 +136,78 @@ public class MainActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
 
                 } else {
+                    //Let's make the initial request, and parse for the first three recipes and store their Recipe ID's
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://food2fork.com/api/search?key=" + API_KEY + "&q=" + ingredients, null,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(final JSONObject response) {
+                                    Log.d(TAG, "This is a THE response " + response.toString());
+                                    JsonParser parser = new JsonParser();
+                                    JsonObject result = parser.parse(response.toString()).getAsJsonObject();
+                                    JsonArray recipes = result.get("recipes").getAsJsonArray();
+                                    JsonObject option1 = recipes.get(0).getAsJsonObject();
+                                    firstChoiceRecipeName = option1.get("title").getAsString();
+                                    firstChoiceRecipeID = option1.get("recipe_id").getAsString();
+                                    JsonObject option2 = recipes.get(1).getAsJsonObject();
+                                    secondChoiceRecipeName = option2.get("title").getAsString();
+                                    secondChoiceRecipeID = option2.get("recipe_id").getAsString();
+                                    JsonObject option3 = recipes.get(2).getAsJsonObject();
+                                    thirdChoiceRecipeName = option3.get("title").getAsString();
+                                    thirdChoiceRecipeID = option3.get("recipe_id").getAsString();
+                                    setRecipeChoices();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(final VolleyError error) {
+                                    Log.d(TAG, "this is the error " + error.toString());
+                                }
+                            });
+                    requestQueue.add(jsonObjectRequest);
                     firstChoice.setEnabled(true);
                     secondChoice.setEnabled(true);
                     thirdChoice.setEnabled(true);
                     //show toast for entered ingredients
                     Toast.makeText(MainActivity.this, "Your ingredients are: "
                             + ingredients, Toast.LENGTH_SHORT).show();
-                    //startsomemethod, use text field from this.ingredients
                 }
             }
         });
-
+        //stuff happens on first choice button click
         firstChoice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Option 1 Click");
+                ExtraActivity.query = firstChoiceRecipeID;
                 Intent myIntent = new Intent(MainActivity.this, ExtraActivity.class);
                 startActivity(myIntent);
+
+
             }
         });
+        //stuff happens on second choice click
         secondChoice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Option 2 Click");
+                ExtraActivity.query = secondChoiceRecipeID;
                 Intent myIntent = new Intent(MainActivity.this, ExtraActivity.class);
                 startActivity(myIntent);
+                //ExtraActivity.secondIngredients = something;
             }
         });
+        //stuff happens on third choice click
         thirdChoice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Option 3 Click");
+                ExtraActivity.query = thirdChoiceRecipeID;
                 Intent myIntent = new Intent(MainActivity.this, ExtraActivity.class);
                 startActivity(myIntent);
+                //ExtraActivity.thirdIngredients = something
             }
         });
+
 
 }
 }
