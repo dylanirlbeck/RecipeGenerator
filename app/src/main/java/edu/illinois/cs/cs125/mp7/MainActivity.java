@@ -33,6 +33,7 @@ import org.json.JSONObject;
 //http://food2fork.com/api/search?key={API_KEY}&q=shredded%20chicken REQUEST
 public class MainActivity extends AppCompatActivity {
     private static final String API_KEY = "027425cf9b8ec6677d75eb132622e862";
+    //save the recipe names and ID's that we are working with
     private static String firstChoiceRecipeName;
     private static String firstChoiceRecipeID;
     private static String secondChoiceRecipeName;
@@ -40,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
     private static String thirdChoiceRecipeName;
     private static String thirdChoiceRecipeID;
     private static String ingredients = null;
+    //save the counts of each choice and the page of search results, changed on generate or generate new click
+    private static int firstChoicecount = 0;
+    private static int secondChoicecount = 1;
+    private static int thirdChoicecount = 2;
+    private static int pagecount = 1;
     //Default logging tag for messages from the main activity
     private static final String TAG = "MP7:Main";
 
@@ -79,10 +85,14 @@ public class MainActivity extends AppCompatActivity {
 
         final Button thirdChoice = (Button) findViewById(R.id.thirdChoice);
 
+        final Button generateNew = (Button) findViewById(R.id.generateNewRecipes);
+
         //Initially disable buttons until generate button clicked
         firstChoice.setEnabled(false);
         secondChoice.setEnabled(false);
         thirdChoice.setEnabled(false);
+        generateButton.setEnabled(false);
+        generateNew.setEnabled(false);
         //Text changed Listener to enable or disable button
         userIngredients.addTextChangedListener(new TextWatcher() {
             @Override
@@ -126,18 +136,69 @@ public class MainActivity extends AppCompatActivity {
         }
         });
 
+        //stuff happens on generate new click
+        generateNew.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Generate New button click");
+                // generate a new set of search results
+                firstChoicecount += 3;
+                secondChoicecount += 3;
+                thirdChoicecount += 3;
+                // check if the count has gotten bigger than the displayed results, max is 30
+                if (firstChoicecount == 30) {
+                    pagecount += 1;
+                    firstChoicecount = 1;
+                    secondChoicecount = 2;
+                    thirdChoicecount = 3;
+                }
+                //make the request
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://food2fork.com/api/search?key=" + API_KEY + "&q=" + ingredients + "&page=" + pagecount, null,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(final JSONObject response) {
+                                Log.d(TAG, "This is a THE response " + response.toString());
+                                JsonParser parser = new JsonParser();
+                                JsonObject result = parser.parse(response.toString()).getAsJsonObject();
+                                JsonArray recipes = result.get("recipes").getAsJsonArray();
+                                JsonObject option1 = recipes.get(firstChoicecount).getAsJsonObject();
+                                firstChoiceRecipeName = option1.get("title").getAsString();
+                                firstChoiceRecipeID = option1.get("recipe_id").getAsString();
+                                JsonObject option2 = recipes.get(secondChoicecount).getAsJsonObject();
+                                secondChoiceRecipeName = option2.get("title").getAsString();
+                                secondChoiceRecipeID = option2.get("recipe_id").getAsString();
+                                JsonObject option3 = recipes.get(thirdChoicecount).getAsJsonObject();
+                                thirdChoiceRecipeName = option3.get("title").getAsString();
+                                thirdChoiceRecipeID = option3.get("recipe_id").getAsString();
+                                setRecipeChoices();
+                                generateNew.setEnabled(true);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(final VolleyError error) {
+                                Log.d(TAG, "this is the error " + error.toString());
+                            }
+                        });
+                requestQueue.add(jsonObjectRequest);
+            }
+                                        });
         //Action for generate button, will call a method that generates three recipe names
         generateButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Generate button click");
+                firstChoicecount = 0;
+                secondChoicecount = 1;
+                thirdChoicecount = 2;
+                pagecount = 1;
                 if (ingredients == null) {
                     Toast.makeText(MainActivity.this, "Please enter ingredients.",
                             Toast.LENGTH_SHORT).show();
 
                 } else {
                     //Let's make the initial request, and parse for the first three recipes and store their Recipe ID's
-                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://food2fork.com/api/search?key=" + API_KEY + "&q=" + ingredients, null,
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://food2fork.com/api/search?key=" + API_KEY + "&q=" + ingredients + "&page=" + pagecount, null,
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(final JSONObject response) {
@@ -145,16 +206,17 @@ public class MainActivity extends AppCompatActivity {
                                     JsonParser parser = new JsonParser();
                                     JsonObject result = parser.parse(response.toString()).getAsJsonObject();
                                     JsonArray recipes = result.get("recipes").getAsJsonArray();
-                                    JsonObject option1 = recipes.get(0).getAsJsonObject();
+                                    JsonObject option1 = recipes.get(firstChoicecount).getAsJsonObject();
                                     firstChoiceRecipeName = option1.get("title").getAsString();
                                     firstChoiceRecipeID = option1.get("recipe_id").getAsString();
-                                    JsonObject option2 = recipes.get(1).getAsJsonObject();
+                                    JsonObject option2 = recipes.get(secondChoicecount).getAsJsonObject();
                                     secondChoiceRecipeName = option2.get("title").getAsString();
                                     secondChoiceRecipeID = option2.get("recipe_id").getAsString();
-                                    JsonObject option3 = recipes.get(2).getAsJsonObject();
+                                    JsonObject option3 = recipes.get(thirdChoicecount).getAsJsonObject();
                                     thirdChoiceRecipeName = option3.get("title").getAsString();
                                     thirdChoiceRecipeID = option3.get("recipe_id").getAsString();
                                     setRecipeChoices();
+                                    generateNew.setEnabled(true);
                                 }
                             },
                             new Response.ErrorListener() {
@@ -181,7 +243,6 @@ public class MainActivity extends AppCompatActivity {
                 ExtraActivity.query = firstChoiceRecipeID;
                 Intent myIntent = new Intent(MainActivity.this, ExtraActivity.class);
                 startActivity(myIntent);
-
 
             }
         });
