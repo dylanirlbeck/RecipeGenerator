@@ -2,7 +2,13 @@ package edu.illinois.cs.cs125.mp7;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -17,6 +23,8 @@ import com.google.gson.JsonParser;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 
 public class ExtraActivity extends AppCompatActivity  {
     private static RequestQueue requestQueue;
@@ -24,13 +32,16 @@ public class ExtraActivity extends AppCompatActivity  {
     private static final String API_KEY = "027425cf9b8ec6677d75eb132622e862";
     public static String query = null;
     public static JSONObject responseJSON = null;
+    public static String urlString;
+    public static String[] ingredientsArray;
+    public static double socialRank;
+    public static String recipeTitleString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_extra);
-        TextView textView = findViewById(R.id.showinfo);
         //make API call and then get the information
         apiCall(query);
 //        textView.setText(ProcessRecipe.main(firstIngredients));
@@ -43,7 +54,18 @@ public class ExtraActivity extends AppCompatActivity  {
                     @Override
                     public void onResponse(final JSONObject response) {
                         Log.d(TAG, "This is a THE response " + response.toString());
-                        responseJSON = response;
+                        JsonParser parser = new JsonParser();
+                        JsonObject result = parser.parse(response.toString()).getAsJsonObject();
+                        JsonObject recipe = result.getAsJsonObject("recipe");
+                        urlString = recipe.get("source_url").getAsString();
+                        JsonArray jsonIngredientsArr = recipe.getAsJsonArray("ingredients");
+                        ingredientsArray = new String[jsonIngredientsArr.size()];
+                        for (int i = 0; i < jsonIngredientsArr.size(); i++) {
+                            ingredientsArray[i] = "Ingredient #" + i + "==" + jsonIngredientsArr.get(i).getAsString() + "\n";
+                        }
+                        socialRank = recipe.get("social_rank").getAsDouble();
+
+                        setView();
                     }
                 },
                 new Response.ErrorListener() {
@@ -54,5 +76,25 @@ public class ExtraActivity extends AppCompatActivity  {
                 });
         requestQueue.add(jsonObjectRequest);
     }
+
+    public void setView() {
+        TextView title = findViewById(R.id.recipeTitle);
+        title.setText(recipeTitleString);
+
+        TextView url = findViewById(R.id.url);
+        url.setText(urlString);
+
+        EditText editText = findViewById(R.id.ingredientList);
+        String allIngredients = String.join("\n", ingredientsArray);
+        editText.setText(allIngredients);
+
+        TextView socR = findViewById(R.id.socialRank);
+        String socialRankString = "" + socialRank;
+        socR.setText(socialRankString);
+
+
+    }
+
+
 
 }

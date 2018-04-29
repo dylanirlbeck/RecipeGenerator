@@ -241,6 +241,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG, "Option 1 Click");
                 ExtraActivity.query = firstChoiceRecipeID;
+                ExtraActivity.recipeTitleString = firstChoiceRecipeName;
                 Intent myIntent = new Intent(MainActivity.this, ExtraActivity.class);
                 startActivity(myIntent);
 
@@ -252,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG, "Option 2 Click");
                 ExtraActivity.query = secondChoiceRecipeID;
+                ExtraActivity.recipeTitleString = secondChoiceRecipeName;
                 Intent myIntent = new Intent(MainActivity.this, ExtraActivity.class);
                 startActivity(myIntent);
                 //ExtraActivity.secondIngredients = something;
@@ -263,6 +265,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG, "Option 3 Click");
                 ExtraActivity.query = thirdChoiceRecipeID;
+                ExtraActivity.recipeTitleString = thirdChoiceRecipeName;
                 Intent myIntent = new Intent(MainActivity.this, ExtraActivity.class);
                 startActivity(myIntent);
                 //ExtraActivity.thirdIngredients = something

@@ -26,29 +26,35 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="193dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginBottom="142dp"
-        android:layout_marginLeft="1dp"
-        android:layout_marginStart="1dp"
         android:layout_marginTop="343dp"
+        android:gravity="center_horizontal"
         android:text="Recipe Generator "
-        android:textSize="20sp"
+        android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/editText"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/developerCredits"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.435"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
-    <EditText
-        android:id="@+id/editText"
+    <TextView
+        android:id="@+id/developerCredits"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="24dp"
         android:layout_marginBottom="13dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center_horizontal"
         android:inputType="textPersonName"
+        android:selectAllOnFocus="false"
+        android:singleLine="false"
         android:text="Developed by Dylan Irlbeck and Pranav Narahari"
-        android:textSize="10sp"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
