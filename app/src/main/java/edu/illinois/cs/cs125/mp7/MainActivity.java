@@ -2,6 +2,7 @@ package edu.illinois.cs.cs125.mp7;
 
 import android.content.Context;
 import android.content.Intent;
+import android.renderscript.ScriptGroup;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -28,6 +29,8 @@ import com.google.gson.JsonParser;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+
 
 //http://food2fork.com/api/search URL
 //http://food2fork.com/api/search?key={API_KEY}&q=shredded%20chicken REQUEST
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private static int secondChoicecount = 1;
     private static int thirdChoicecount = 2;
     private static int pagecount = 1;
+    private static int arraySize;
     //Default logging tag for messages from the main activity
     private static final String TAG = "MP7:Main";
 
@@ -113,7 +117,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+
             }
+
         });
 
         //Action for text field
@@ -161,15 +167,31 @@ public class MainActivity extends AppCompatActivity {
                                 JsonParser parser = new JsonParser();
                                 JsonObject result = parser.parse(response.toString()).getAsJsonObject();
                                 JsonArray recipes = result.get("recipes").getAsJsonArray();
-                                JsonObject option1 = recipes.get(firstChoicecount).getAsJsonObject();
-                                firstChoiceRecipeName = option1.get("title").getAsString();
-                                firstChoiceRecipeID = option1.get("recipe_id").getAsString();
-                                JsonObject option2 = recipes.get(secondChoicecount).getAsJsonObject();
-                                secondChoiceRecipeName = option2.get("title").getAsString();
-                                secondChoiceRecipeID = option2.get("recipe_id").getAsString();
-                                JsonObject option3 = recipes.get(thirdChoicecount).getAsJsonObject();
-                                thirdChoiceRecipeName = option3.get("title").getAsString();
-                                thirdChoiceRecipeID = option3.get("recipe_id").getAsString();
+                                try {
+                                    JsonObject option1 = recipes.get(firstChoicecount).getAsJsonObject();
+                                    firstChoiceRecipeName = option1.get("title").getAsString();
+                                    firstChoiceRecipeID = option1.get("recipe_id").getAsString();
+                                }
+                                catch (IndexOutOfBoundsException e) {
+                                    firstChoiceRecipeName = "No option";
+
+                                }
+                                try {
+                                    JsonObject option2 = recipes.get(secondChoicecount).getAsJsonObject();
+                                    secondChoiceRecipeName = option2.get("title").getAsString();
+                                    secondChoiceRecipeID = option2.get("recipe_id").getAsString();
+                                }
+                                catch (IndexOutOfBoundsException e) {
+                                    secondChoiceRecipeName = "No option";
+                                }
+                                try {
+                                    JsonObject option3 = recipes.get(thirdChoicecount).getAsJsonObject();
+                                    thirdChoiceRecipeName = option3.get("title").getAsString();
+                                    thirdChoiceRecipeID = option3.get("recipe_id").getAsString();
+                                }
+                                catch (IndexOutOfBoundsException e) {
+                                    thirdChoiceRecipeName = "No option";
+                                }
                                 setRecipeChoices();
                                 generateNew.setEnabled(true);
                             }
@@ -206,15 +228,34 @@ public class MainActivity extends AppCompatActivity {
                                     JsonParser parser = new JsonParser();
                                     JsonObject result = parser.parse(response.toString()).getAsJsonObject();
                                     JsonArray recipes = result.get("recipes").getAsJsonArray();
-                                    JsonObject option1 = recipes.get(firstChoicecount).getAsJsonObject();
-                                    firstChoiceRecipeName = option1.get("title").getAsString();
-                                    firstChoiceRecipeID = option1.get("recipe_id").getAsString();
-                                    JsonObject option2 = recipes.get(secondChoicecount).getAsJsonObject();
-                                    secondChoiceRecipeName = option2.get("title").getAsString();
-                                    secondChoiceRecipeID = option2.get("recipe_id").getAsString();
-                                    JsonObject option3 = recipes.get(thirdChoicecount).getAsJsonObject();
-                                    thirdChoiceRecipeName = option3.get("title").getAsString();
-                                    thirdChoiceRecipeID = option3.get("recipe_id").getAsString();
+                                    arraySize = recipes.size();
+                                    try {
+                                        JsonObject option1 = recipes.get(firstChoicecount).getAsJsonObject();
+                                        firstChoiceRecipeName = option1.get("title").getAsString();
+                                        firstChoiceRecipeID = option1.get("recipe_id").getAsString();
+                                    }
+                                    catch (IndexOutOfBoundsException e) {
+                                        firstChoiceRecipeName = "No option";
+                                        firstChoice.setEnabled(false);
+                                    }
+                                    try {
+                                        JsonObject option2 = recipes.get(secondChoicecount).getAsJsonObject();
+                                        secondChoiceRecipeName = option2.get("title").getAsString();
+                                        secondChoiceRecipeID = option2.get("recipe_id").getAsString();
+                                    }
+                                    catch (IndexOutOfBoundsException e) {
+                                        secondChoiceRecipeName = "No option";
+                                        secondChoice.setEnabled(false);
+                                    }
+                                    try {
+                                        JsonObject option3 = recipes.get(thirdChoicecount).getAsJsonObject();
+                                        thirdChoiceRecipeName = option3.get("title").getAsString();
+                                        thirdChoiceRecipeID = option3.get("recipe_id").getAsString();
+                                    }
+                                    catch (IndexOutOfBoundsException e) {
+                                        thirdChoiceRecipeName = "No option";
+                                        thirdChoice.setEnabled(false);
+                                    }
                                     setRecipeChoices();
                                     generateNew.setEnabled(true);
                                 }

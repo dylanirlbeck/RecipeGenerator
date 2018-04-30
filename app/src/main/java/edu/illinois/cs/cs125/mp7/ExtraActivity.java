@@ -89,7 +89,7 @@ public class ExtraActivity extends AppCompatActivity  {
         editText.setText(allIngredients);
 
         TextView socR = findViewById(R.id.socialRank);
-        String socialRankString = "" + socialRank;
+        String socialRankString = "Social Rank: " + socialRank;
         socR.setText(socialRankString);
 
 
