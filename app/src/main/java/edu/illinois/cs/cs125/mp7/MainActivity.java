@@ -174,6 +174,8 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 catch (IndexOutOfBoundsException e) {
                                     firstChoiceRecipeName = "No option";
+                                    firstChoice.setEnabled(false);
+                                    generateNew.setEnabled(false);
 
                                 }
                                 try {
@@ -183,6 +185,8 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 catch (IndexOutOfBoundsException e) {
                                     secondChoiceRecipeName = "No option";
+                                    secondChoice.setEnabled(false);
+                                    generateNew.setEnabled(false);
                                 }
                                 try {
                                     JsonObject option3 = recipes.get(thirdChoicecount).getAsJsonObject();
@@ -191,9 +195,11 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 catch (IndexOutOfBoundsException e) {
                                     thirdChoiceRecipeName = "No option";
+                                    thirdChoice.setEnabled(false);
+                                    generateNew.setEnabled(false);
                                 }
                                 setRecipeChoices();
-                                generateNew.setEnabled(true);
+
                             }
                         },
                         new Response.ErrorListener() {
@@ -203,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
                 requestQueue.add(jsonObjectRequest);
+                generateNew.setEnabled(true);
             }
                                         });
         //Action for generate button, will call a method that generates three recipe names
