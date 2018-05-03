@@ -10,47 +10,61 @@
         android:id="@+id/recipeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginBottom="66dp"
         android:layout_marginTop="16dp"
         android:gravity="center_horizontal"
+        android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/socialRank"
+        app:layout_constraintStart_toStartOf="@id/socialRank"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/url"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginBottom="13dp"
         android:autoLink="web"
         android:linksClickable="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/ingredientList"
-        android:layout_width="wrap_content"
-        android:layout_gravity="fill"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="152dp"
-        android:clickable="false"
-        android:ems="10"
-        android:focusable="false"
-        android:inputType="none|textMultiLine"
-        android:singleLine="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/socialRank"
+        app:layout_constraintStart_toStartOf="@id/socialRank"
+        app:layout_constraintTop_toBottomOf="@+id/recipeTitle" />
 
     <TextView
         android:id="@+id/socialRank"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="23dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/ingredientList"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginBottom="391dp"
+        android:layout_marginLeft="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/url"
+        app:layout_constraintTop_toBottomOf="@+id/recipeTitle" />
+
+    <EditText
+        android:id="@+id/ingredientList"
+        android:layout_width="250dp"
+        android:layout_height="370dp"
+        android:layout_gravity="fill"
+        android:layout_marginBottom="331dp"
+        android:layout_marginTop="20dp"
+        android:clickable="false"
+        android:ems="10"
+        android:focusable="false"
+        android:inputType="none|textMultiLine"
+        android:singleLine="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/socialRank" />
+
+    <TextView
+        android:id="@+id/IngredientsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ingredients:"
+        app:layout_constraintStart_toStartOf="@id/ingredientList"
+        android:layout_marginLeft="75dp"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/ingredientList"/>
 
 
 </android.support.constraint.ConstraintLayout>

@@ -4,39 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_launcher_background"
+    android:background="@drawable/ic_launcher_foreground"
     tools:context=".SplashActivity"
 
 
     tools:layout_editor_absoluteY="81dp">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="158dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="29dp"
-        android:layout_marginLeft="116dp"
-        android:layout_marginStart="116dp"
-        android:layout_marginTop="124dp"
-        android:src="@android:drawable/sym_def_app_icon"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
-
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginBottom="142dp"
-        android:layout_marginTop="343dp"
+        android:layout_width="378dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="76dp"
         android:gravity="center_horizontal"
-        android:text="Recipe Generator "
-        android:textSize="30sp"
+        android:text="The Recipe Generator "
+        android:textSize="35sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/developerCredits"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.435"
+        app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
@@ -44,10 +28,9 @@
     <TextView
         android:id="@+id/developerCredits"
         android:layout_width="wrap_content"
-        android:layout_height="24dp"
+        android:layout_height="32dp"
         android:layout_marginBottom="13dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:gravity="center_horizontal"
         android:inputType="textPersonName"
         android:selectAllOnFocus="false"
@@ -56,8 +39,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
 

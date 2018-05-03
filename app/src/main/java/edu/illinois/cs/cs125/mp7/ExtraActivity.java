@@ -2,12 +2,10 @@ package edu.illinois.cs.cs125.mp7;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.inputmethod.EditorInfo;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,6 +22,7 @@ import com.google.gson.JsonParser;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ExtraActivity extends AppCompatActivity  {
@@ -37,15 +36,26 @@ public class ExtraActivity extends AppCompatActivity  {
     public static double socialRank;
     public static String recipeTitleString;
 
+
+    //transition in case of back button click
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.xml.left_to_right, R.xml.right_to_left);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_extra);
         //make API call and then get the information
         apiCall(query);
-//        textView.setText(ProcessRecipe.main(firstIngredients));
-    }
+
+
+
+
+
+}
 
     public void apiCall(final String query) {
         requestQueue = Volley.newRequestQueue(this);
@@ -61,10 +71,9 @@ public class ExtraActivity extends AppCompatActivity  {
                         JsonArray jsonIngredientsArr = recipe.getAsJsonArray("ingredients");
                         ingredientsArray = new String[jsonIngredientsArr.size()];
                         for (int i = 0; i < jsonIngredientsArr.size(); i++) {
-                            ingredientsArray[i] = "Ingredient #" + i + "==" + jsonIngredientsArr.get(i).getAsString() + "\n";
+                            ingredientsArray[i] = jsonIngredientsArr.get(i).getAsString() + "\n";
                         }
                         socialRank = recipe.get("social_rank").getAsDouble();
-
                         setView();
                     }
                 },

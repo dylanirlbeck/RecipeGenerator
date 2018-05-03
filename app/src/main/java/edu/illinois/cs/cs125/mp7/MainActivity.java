@@ -2,6 +2,7 @@ package edu.illinois.cs.cs125.mp7;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.renderscript.ScriptGroup;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,8 +29,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import org.json.JSONObject;
-
-import java.lang.reflect.Array;
 
 
 //http://food2fork.com/api/search URL
@@ -66,12 +65,16 @@ public class MainActivity extends AppCompatActivity {
         TextView thirdtextview = findViewById(R.id.thirdChoiceText);
         thirdtextview.setText(thirdChoiceRecipeName);
     }
+
     /**
      * Run when our activity comes into view.
+     *
      * @param savedInstanceState state that was saved by the activity last time it was paused
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //code needed for fade transition after splash screen
+        overridePendingTransition(R.xml.fadein, R.xml.fadeout);
         requestQueue = Volley.newRequestQueue(this);
         Log.d(TAG, "onCreate ran");
         super.onCreate(savedInstanceState);
@@ -90,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
         final Button thirdChoice = (Button) findViewById(R.id.thirdChoice);
 
         final Button generateNew = (Button) findViewById(R.id.generateNewRecipes);
+
+        final Button informationButton = (Button) findViewById(R.id.informationButton);
 
         //Initially disable buttons until generate button clicked
         firstChoice.setEnabled(false);
@@ -124,26 +129,26 @@ public class MainActivity extends AppCompatActivity {
 
         //Action for text field
         userIngredients.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-        @Override
-        public boolean onEditorAction(TextView text, int actionId, KeyEvent event) {
-            //save ingredients as a instance variable
-            boolean handled = false;
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                Log.d(TAG, "Text field entered");
-                //close keyboard
-                InputMethodManager inputManager = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
+            @Override
+            public boolean onEditorAction(TextView text, int actionId, KeyEvent event) {
+                //save ingredients as a instance variable
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    Log.d(TAG, "Text field entered");
+                    //close keyboard
+                    InputMethodManager inputManager = (InputMethodManager)
+                            getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
 
-                handled = true;
+                    handled = true;
+                }
+                return handled;
             }
-            return handled;
-        }
         });
 
-        //stuff happens on generate new click
-        generateNew.setOnClickListener( new View.OnClickListener() {
+        //on generate new button click, increment json "recipe" array counters and get new info.
+        generateNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Generate New button click");
@@ -171,8 +176,7 @@ public class MainActivity extends AppCompatActivity {
                                     JsonObject option1 = recipes.get(firstChoicecount).getAsJsonObject();
                                     firstChoiceRecipeName = option1.get("title").getAsString();
                                     firstChoiceRecipeID = option1.get("recipe_id").getAsString();
-                                }
-                                catch (IndexOutOfBoundsException e) {
+                                } catch (IndexOutOfBoundsException e) {
                                     firstChoiceRecipeName = "No option";
                                     firstChoice.setEnabled(false);
                                     generateNew.setEnabled(false);
@@ -182,8 +186,7 @@ public class MainActivity extends AppCompatActivity {
                                     JsonObject option2 = recipes.get(secondChoicecount).getAsJsonObject();
                                     secondChoiceRecipeName = option2.get("title").getAsString();
                                     secondChoiceRecipeID = option2.get("recipe_id").getAsString();
-                                }
-                                catch (IndexOutOfBoundsException e) {
+                                } catch (IndexOutOfBoundsException e) {
                                     secondChoiceRecipeName = "No option";
                                     secondChoice.setEnabled(false);
                                     generateNew.setEnabled(false);
@@ -192,8 +195,7 @@ public class MainActivity extends AppCompatActivity {
                                     JsonObject option3 = recipes.get(thirdChoicecount).getAsJsonObject();
                                     thirdChoiceRecipeName = option3.get("title").getAsString();
                                     thirdChoiceRecipeID = option3.get("recipe_id").getAsString();
-                                }
-                                catch (IndexOutOfBoundsException e) {
+                                } catch (IndexOutOfBoundsException e) {
                                     thirdChoiceRecipeName = "No option";
                                     thirdChoice.setEnabled(false);
                                     generateNew.setEnabled(false);
@@ -211,9 +213,9 @@ public class MainActivity extends AppCompatActivity {
                 requestQueue.add(jsonObjectRequest);
                 generateNew.setEnabled(true);
             }
-                                        });
+        });
         //Action for generate button, will call a method that generates three recipe names
-        generateButton.setOnClickListener( new View.OnClickListener() {
+        generateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Generate button click");
@@ -236,35 +238,37 @@ public class MainActivity extends AppCompatActivity {
                                     JsonObject result = parser.parse(response.toString()).getAsJsonObject();
                                     JsonArray recipes = result.get("recipes").getAsJsonArray();
                                     arraySize = recipes.size();
+
+
                                     try {
                                         JsonObject option1 = recipes.get(firstChoicecount).getAsJsonObject();
                                         firstChoiceRecipeName = option1.get("title").getAsString();
                                         firstChoiceRecipeID = option1.get("recipe_id").getAsString();
-                                    }
-                                    catch (IndexOutOfBoundsException e) {
+                                    } catch (IndexOutOfBoundsException e) {
                                         firstChoiceRecipeName = "No option";
                                         firstChoice.setEnabled(false);
+                                        generateNew.setEnabled(false);
                                     }
                                     try {
                                         JsonObject option2 = recipes.get(secondChoicecount).getAsJsonObject();
                                         secondChoiceRecipeName = option2.get("title").getAsString();
                                         secondChoiceRecipeID = option2.get("recipe_id").getAsString();
-                                    }
-                                    catch (IndexOutOfBoundsException e) {
+                                    } catch (IndexOutOfBoundsException e) {
                                         secondChoiceRecipeName = "No option";
                                         secondChoice.setEnabled(false);
+                                        generateNew.setEnabled(false);
                                     }
                                     try {
                                         JsonObject option3 = recipes.get(thirdChoicecount).getAsJsonObject();
                                         thirdChoiceRecipeName = option3.get("title").getAsString();
                                         thirdChoiceRecipeID = option3.get("recipe_id").getAsString();
-                                    }
-                                    catch (IndexOutOfBoundsException e) {
+                                    } catch (IndexOutOfBoundsException e) {
                                         thirdChoiceRecipeName = "No option";
                                         thirdChoice.setEnabled(false);
+                                        generateNew.setEnabled(false);
                                     }
                                     setRecipeChoices();
-                                    generateNew.setEnabled(true);
+
                                 }
                             },
                             new Response.ErrorListener() {
@@ -274,9 +278,11 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
                     requestQueue.add(jsonObjectRequest);
+                    //set buttons to extra activity and generate new equal to true, will disable them in response if errors
                     firstChoice.setEnabled(true);
                     secondChoice.setEnabled(true);
                     thirdChoice.setEnabled(true);
+                    generateNew.setEnabled(true);
                     //show toast for entered ingredients
                     Toast.makeText(MainActivity.this, "Your ingredients are: "
                             + ingredients, Toast.LENGTH_SHORT).show();
@@ -292,6 +298,7 @@ public class MainActivity extends AppCompatActivity {
                 ExtraActivity.recipeTitleString = firstChoiceRecipeName;
                 Intent myIntent = new Intent(MainActivity.this, ExtraActivity.class);
                 startActivity(myIntent);
+                overridePendingTransition(R.xml.enter, R.xml.exit);
 
             }
         });
@@ -304,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
                 ExtraActivity.recipeTitleString = secondChoiceRecipeName;
                 Intent myIntent = new Intent(MainActivity.this, ExtraActivity.class);
                 startActivity(myIntent);
-                //ExtraActivity.secondIngredients = something;
+                overridePendingTransition(R.xml.enter, R.xml.exit);
             }
         });
         //stuff happens on third choice click
@@ -316,10 +323,19 @@ public class MainActivity extends AppCompatActivity {
                 ExtraActivity.recipeTitleString = thirdChoiceRecipeName;
                 Intent myIntent = new Intent(MainActivity.this, ExtraActivity.class);
                 startActivity(myIntent);
-                //ExtraActivity.thirdIngredients = something
+                overridePendingTransition(R.xml.enter, R.xml.exit);
             }
         });
 
+        informationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Information Button Click");
+               Intent myIntent = new Intent(MainActivity.this, InformationActivity.class);
+               startActivity(myIntent);
+               overridePendingTransition(R.xml.enter, R.xml.exit);
+           }
 
-}
+       });
+    }
 }

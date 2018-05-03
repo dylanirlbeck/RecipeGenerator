@@ -6,149 +6,138 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/appInformation"
-        android:layout_width="374dp"
-        android:layout_height="67dp"
-        android:layout_marginBottom="80dp"
-        android:layout_marginEnd="6dp"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="16dp"
-        android:text="After entering inputs using the keyboard, users should see a message pop up at the bottom with their entered ingredients. Then, users will be able to view other information on whichever recipe they choose."
-        app:layout_constraintBottom_toTopOf="@+id/generateRecipes"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
         android:id="@+id/ingredientInput"
-        android:layout_width="375dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="112dp"
+        android:layout_width="329dp"
+        android:layout_height="49dp"
+        android:layout_marginEnd="6dp"
         android:layout_weight="1"
         android:ems="10"
         android:hint="Enter Ingredients in Comma-Separated List"
         android:imeOptions="actionDone"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@id/generateRecipes"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/generateRecipes"
+        app:layout_constraintEnd_toStartOf="@+id/button2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/generateRecipes"
-        android:layout_width="164dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="340dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginStart="24dp"
+
+        android:layout_marginBottom="7dp"
+        android:layout_marginEnd="29dp"
+        android:layout_marginStart="16dp"
         android:gravity="center"
         android:text="Generate Recipes"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appInformation" />
+        app:layout_constraintBottom_toTopOf="@+id/firstChoice"
+        app:layout_constraintEnd_toStartOf="@+id/firstChoice"
+        app:layout_constraintStart_toStartOf="@+id/ingredientInput"
+        app:layout_constraintTop_toBottomOf="@+id/ingredientInput" />
+    <!--app:layout_constraintTop_toBottomOf="@+id/appInformation" />-->
 
     <Button
         android:id="@+id/firstChoice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="64dp"
-        android:layout_marginRight="64dp"
-        android:layout_marginTop="30dp"
+
+        android:layout_marginBottom="84dp"
+        android:layout_marginEnd="49dp"
         android:text="Load Option 1"
         app:layout_constraintBottom_toTopOf="@+id/secondChoice"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/firstChoiceText"
-        app:layout_constraintTop_toBottomOf="@+id/ingredientInput" />
+        app:layout_constraintTop_toBottomOf="@+id/generateRecipes" />
 
     <Button
         android:id="@+id/secondChoice"
         android:layout_width="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginRight="64dp"
+
+        android:layout_marginBottom="79dp"
+        android:layout_marginEnd="49dp"
         android:text="Load Option 2"
         app:layout_constraintBottom_toTopOf="@+id/thirdChoice"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/secondChoiceText"
-        app:layout_constraintStart_toStartOf="@+id/firstChoice"
         app:layout_constraintTop_toBottomOf="@+id/firstChoice" />
 
     <Button
         android:id="@+id/thirdChoice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginRight="64dp"
+        android:layout_marginBottom="45dp"
+        android:layout_marginEnd="49dp"
         android:text="Load Option 3"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/generateNewRecipes"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@id/secondChoice"
-        app:layout_constraintStart_toStartOf="@+id/secondChoice"
+        app:layout_constraintStart_toEndOf="@+id/thirdChoiceText"
         app:layout_constraintTop_toBottomOf="@+id/secondChoice" />
 
     <TextView
         android:id="@+id/firstChoiceText"
-        android:layout_width="157dp"
-        android:layout_height="70dp"
-        android:layout_marginBottom="50dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/secondChoiceText"
+        android:layout_width="0dp"
+        android:layout_height="82dp"
+        android:layout_marginBottom="110dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="99dp"
+        app:layout_constraintBottom_toBottomOf="@+id/secondChoice"
         app:layout_constraintEnd_toStartOf="@+id/firstChoice"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/generateRecipes" />
+        />
 
     <TextView
         android:id="@+id/secondChoiceText"
-        android:layout_width="161dp"
-        android:layout_height="73dp"
-        android:layout_marginBottom="35dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginStart="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/thirdChoiceText"
+        android:layout_width="0dp"
+        android:layout_height="82dp"
+        android:layout_marginBottom="170dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="139dp"
+        app:layout_constraintBottom_toTopOf="@+id/generateNewRecipes"
         app:layout_constraintEnd_toStartOf="@+id/secondChoice"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/firstChoiceText" />
+        app:layout_constraintTop_toBottomOf="@+id/generateRecipes"
+        app:layout_constraintTop_toTopOf="@+id/secondChoice"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/thirdChoiceText"
-        android:layout_width="162dp"
-        android:layout_height="69dp"
-        android:layout_marginBottom="90dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/secondChoiceText"
-        app:layout_constraintEnd_toEndOf="@id/secondChoiceText"
-        app:layout_constraintTop_toBottomOf="@+id/secondChoiceText" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="11dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/generateNewRecipes"
+        app:layout_constraintEnd_toStartOf="@+id/thirdChoice"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/thirdChoice" />
 
     <Button
         android:id="@+id/generateNewRecipes"
-        android:layout_width="139dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="74dp"
-        android:layout_marginLeft="84dp"
-        android:layout_marginRight="74dp"
-        android:layout_marginStart="84dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="112dp"
         android:text="Generate New Recipes"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/thirdChoice"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/thirdChoiceText" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/thirdChoice" />
+
+    <Button
+        android:id="@+id/informationButton"
+        android:layout_width="43dp"
+        android:layout_height="47dp"
+        android:layout_marginEnd="6dp"
+        android:background="@drawable/information_button"
+        android:text="i"
+        app:layout_constraintBaseline_toBaselineOf="@+id/ingredientInput"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ingredientInput" />
+
 
 </android.support.constraint.ConstraintLayout>
