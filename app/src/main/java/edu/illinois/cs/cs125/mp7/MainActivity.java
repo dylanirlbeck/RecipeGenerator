@@ -36,21 +36,21 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
     private static final String API_KEY = "027425cf9b8ec6677d75eb132622e862";
     //save the recipe names and ID's that we are working with
-    private static String firstChoiceRecipeName;
-    private static String firstChoiceRecipeID;
-    private static String secondChoiceRecipeName;
-    private static String secondChoiceRecipeID;
-    private static String thirdChoiceRecipeName;
-    private static String thirdChoiceRecipeID;
-    private static String ingredients = null;
+    private String firstChoiceRecipeName;
+    private String firstChoiceRecipeID;
+    private String secondChoiceRecipeName;
+    private String secondChoiceRecipeID;
+    private String thirdChoiceRecipeName;
+    private String thirdChoiceRecipeID;
+    private String ingredients = null;
     //save the counts of each choice and the page of search results, changed on generate or generate new click
-    private static int firstChoicecount = 0;
-    private static int secondChoicecount = 1;
-    private static int thirdChoicecount = 2;
-    private static int pagecount = 1;
-    private static int arraySize;
+    private int firstChoicecount = 0;
+    private int secondChoicecount = 1;
+    private int thirdChoicecount = 2;
+    private int pagecount = 1;
+    private int arraySize;
     //Default logging tag for messages from the main activity
-    private static final String TAG = "MP7:Main";
+    private final String TAG = "MP7:Main";
 
     private static RequestQueue requestQueue;
 

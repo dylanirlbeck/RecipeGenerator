@@ -27,14 +27,14 @@ import java.util.List;
 
 public class ExtraActivity extends AppCompatActivity  {
     private static RequestQueue requestQueue;
-    private static final String TAG = "MP7: ProcessRecipe";
-    private static final String API_KEY = "027425cf9b8ec6677d75eb132622e862";
-    public static String query = null;
-    public static JSONObject responseJSON = null;
+    private final String TAG = "MP7: ProcessRecipe";
+    private final String API_KEY = "027425cf9b8ec6677d75eb132622e862";
+    public String query = null;
+    public JSONObject responseJSON = null;
     public static String urlString;
-    public static String[] ingredientsArray;
-    public static double socialRank;
-    public static String recipeTitleString;
+    public String[] ingredientsArray;
+    public double socialRank;
+    public String recipeTitleString;
 
 
     //transition in case of back button click
